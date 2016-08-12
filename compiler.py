@@ -1,5 +1,8 @@
 from collections import namedtuple as NT
-from typing import Union, List
+import zipfile
+import io
+import os
+import json
 
 Literal     = NT("Literal", "val")
 IfElse      = NT("IfElse", "if_clause else_clause")
@@ -7,16 +10,14 @@ Call        = NT("Call", "name")
 Word        = NT("Word", "name code")
 ParseResult = NT("ParseResult", "main vars words")
 
-# typing types
-Token = List[Union[Literal, Call, IfElse]]
 def parse(code: str) -> ParseResult:
     "Parses `code` and returns a ParseResult"
     tokens = list(reversed(code.split()))
     vars_ = []
-    defs = [] # type: List[Word]
-    main = [] # type: Token
-    if_clause = [] # type: Token
-    else_clause = [] # type: Token
+    defs = []
+    main = []
+    if_clause = []
+    else_clause = []
     cur = [main]
     while tokens:
         token = tokens.pop()
@@ -37,7 +38,7 @@ def parse(code: str) -> ParseResult:
             cur[-1].append(Literal(to_number(token)))
         elif token == ":":
             word_name = tokens.pop()
-            word_def = [] # type: List[Union[Literal, Call, IfElse]]
+            word_def = []
             cur.append(word_def)
         elif token == ";":
             word = Word(word_name, word_def)
@@ -52,6 +53,50 @@ def parse(code: str) -> ParseResult:
             cur[-1].append(Call(token))
     return ParseResult(main, vars_, defs)
 
+def compile_code(code: str, path: str) -> None:
+    "Compiles `code` into a sb2 files and writes it out at `path`"
+    with open(path, "wb") as f:
+        f.write(compile_to_sb2(parse(code)).getvalue())
+
+def compile_to_sb2(pr: ParseResult) -> io.BytesIO:
+    "Takes a ParseResult and returns a io.BytesIO object that can be written to a sb2"
+    zip_bytes = io.BytesIO()
+    sb2 = zipfile.ZipFile(zip_bytes, "w")
+    for filename in os.listdir("scratching forth base"):
+        if filename not in ("project.json", ".DS_Store"):
+            sb2.write(os.path.join("scratching forth base", filename), arcname=filename, compress_type=zipfile.ZIP_DEFLATED)
+    with open("scratching forth base/project.json") as f:
+        scripts = json.load(f)
+    compiled = compile_json(pr)
+    #print(json.dumps(compiled, indent = 2))
+    scripts["children"][0]["scripts"].extend(compiled)
+    #print(scripts)
+    scripts_json = json.dumps(scripts)
+    sb2.writestr("project.json", scripts_json)
+    sb2.close()
+    return zip_bytes
+
+def compile_json(pr: ParseResult) -> list:
+    "Compiles pr into json"
+    def create_main(scripts):
+        return [0, 0, [["whenGreenFlag"], *scripts]]
+    def create_word(name, scripts):
+        return [200, 0, [["procDef", name, [], [], True], *scripts]]
+    def compile_token(token):
+        if isinstance(token, Literal):
+            return ["call", "PUSH %s", token.val]
+        elif isinstance(token, IfElse):
+            return [["setVar:to:", "~branch?", ["getLine:ofList:", "last", "DATA STACK"]],
+                    ["deleteLine:ofList:", "last", "DATA STACK"],
+                    ["doIfElse", ["=", ["readVariable", "~branch?"], ["not", false]],
+                     [list(map(compile_token, token.if_clause))],
+                     [list(map(compile_token, token.else_clause))]]]
+        elif isinstance(token, Call):
+            return ["call", token.name]
+    main = create_main(list(map(compile_token, pr.main)))
+    words = [create_word(word.name, list(map(compile_token, word.code))) for word in pr.words]
+    return [main,]
+
 def is_number(token: str) -> bool:
     "Predicate to determine if `token` is a number"
     try:
@@ -65,7 +110,8 @@ def to_number(token: str) -> float:
     "Converts `token` to a number"
     return float(token)
 
-if __name__ == '__main__':
+def test_parser() -> None:
+    "Simple tests for the parser"
     tests = (
         ": RINSE  FAUCETS OPEN  TILL-FULL  FAUCETS CLOSE ;",
         "1 1 + .",
@@ -81,3 +127,7 @@ if __name__ == '__main__':
         pr = parse(test)
         print(pr)
         print()
+
+if __name__ == '__main__':
+    compile_code("1 1 + .", "1_plus_1.sb2")
+    compile_code("1 1 == . CR 1 2 == .", "equals.sb2")
