@@ -68,7 +68,7 @@ def compile_to_sb2(pr: ParseResult) -> io.BytesIO:
     with open("scratching forth base/project.json") as f:
         scripts = json.load(f)
     compiled = compile_json(pr)
-    #print(json.dumps(compiled, indent = 2))
+    #print(json.dumps(compiled))
     scripts["children"][0]["scripts"].extend(compiled)
     #print(scripts)
     scripts_json = json.dumps(scripts)
@@ -79,23 +79,28 @@ def compile_to_sb2(pr: ParseResult) -> io.BytesIO:
 def compile_json(pr: ParseResult) -> list:
     "Compiles pr into json"
     def create_main(scripts):
-        return [0, 0, [["whenGreenFlag"], *scripts]]
+        return [0, 0, [["whenGreenFlag"], ["call", "INIT"], *scripts]]
     def create_word(name, scripts):
         return [200, 0, [["procDef", name, [], [], True], *scripts]]
     def compile_token(token):
         if isinstance(token, Literal):
-            return ["call", "PUSH %s", token.val]
+            return [["call", "PUSH %s", token.val]]
         elif isinstance(token, IfElse):
             return [["setVar:to:", "~branch?", ["getLine:ofList:", "last", "DATA STACK"]],
                     ["deleteLine:ofList:", "last", "DATA STACK"],
-                    ["doIfElse", ["=", ["readVariable", "~branch?"], ["not", false]],
-                     [list(map(compile_token, token.if_clause))],
-                     [list(map(compile_token, token.else_clause))]]]
+                    ["doIfElse", ["=", ["readVariable", "~branch?"], ["not", False]],
+                     extract(token.if_clause),
+                     extract(token.else_clause)]]
         elif isinstance(token, Call):
-            return ["call", token.name]
-    main = create_main(list(map(compile_token, pr.main)))
-    words = [create_word(word.name, list(map(compile_token, word.code))) for word in pr.words]
-    return [main,]
+            return [["call", token.name]]
+    def extract(code):
+        c = []
+        for tok in code:
+            c.extend(compile_token(tok))
+        return c
+    main = create_main(extract(pr.main))
+    words = [create_word(word.name, extract(word.code)) for word in pr.words]
+    return [main, *words]
 
 def is_number(token: str) -> bool:
     "Predicate to determine if `token` is a number"

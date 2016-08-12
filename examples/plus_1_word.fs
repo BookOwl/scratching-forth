@@ -1,0 +1,2 @@
+: PLUS_ONE 1 + ;
+1 PLUS_ONE .
