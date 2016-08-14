@@ -34,6 +34,13 @@ Scratching Forth currently support the following words:
 * CR
 * =
 * IF ... [ELSE ...] THEN
+* >
+* <
+* 0=
+* 0>
+* 0<
+* AND
+* OR
 
 Scratching Forth does _not_ have support for the return stack (yet).
 
