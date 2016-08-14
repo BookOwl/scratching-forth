@@ -121,10 +121,10 @@ def test_parser() -> None:
         ": RINSE  FAUCETS OPEN  TILL-FULL  FAUCETS CLOSE ;",
         "1 1 + .",
         "1 1 ( this is a comment ) + .",
-        "1 1 == IF 1 ELSE 2 THEN .",
-        "1 2 == IF 1 ELSE 1 1 == IF 2 ELSE 3 THEN THEN .",
+        "1 1 = IF 1 ELSE 2 THEN .",
+        "1 2 = IF 1 ELSE 1 1 = IF 2 ELSE 3 THEN THEN .",
         "VARIABLE foo 1 .",
-        """: FACT dup 1 == IF pop 1 ELSE dup 1 - FACT * THEN ;
+        """: FACT dup 1 = IF pop 1 ELSE dup 1 - FACT * THEN ;
            5 FACT .""",
         "FALSE IF 1 ELSE FALSE IF 2 ELSE TRUE IF 3 ELSE 4 THEN THEN THEN",
         )
@@ -135,4 +135,4 @@ def test_parser() -> None:
 
 if __name__ == '__main__':
     compile_code("1 1 + .", "1_plus_1.sb2")
-    compile_code("1 1 == . CR 1 2 == .", "equals.sb2")
+    compile_code("1 1 = . CR 1 2 = .", "equals.sb2")

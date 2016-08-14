@@ -32,7 +32,7 @@ Scratching Forth currently support the following words:
 * OVER
 * .
 * CR
-* ==
+* =
 * IF ... [ELSE ...] THEN
 
 Scratching Forth does _not_ have support for the return stack (yet).

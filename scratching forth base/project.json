@@ -110,7 +110,7 @@
 						["append:toList:", ["*", ["readVariable", "~A"], ["readVariable", "~B"]], "DATA STACK"]]],
 				[606.9,
 					644.95,
-					[["procDef", "==", [], [], true],
+					[["procDef", "=", [], [], true],
 						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
 						["deleteLine:ofList:", "last", "DATA STACK"],
 						["setVar:to:", "~B", ["getLine:ofList:", "last", "DATA STACK"]],
