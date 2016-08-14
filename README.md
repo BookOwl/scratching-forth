@@ -7,7 +7,7 @@ Scratching Forth is a compiler from Forth to Scratch .sb2 files.
 It is written in Python, and released under the MIT license.
 
 ## How to install
-1. Make sure you have Python 3 installed.
+1. Make sure you have Python 3.5 installed.
 2. Clone this repo to your computer with `git clone https://github.com/BookOwl/scratching-forth`
 
 ## How to run
