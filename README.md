@@ -41,6 +41,16 @@ Scratching Forth currently support the following words:
 * 0<
 * AND
 * OR
+* 1+
+* 1-
+* 2+
+* 2-
+* 2*
+* 2/
+* ABS
+* NEGATE
+* MIN
+* MAX
 
 Scratching Forth does _not_ have support for the return stack (yet).
 

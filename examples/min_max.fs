@@ -1,0 +1,4 @@
+1 2 MAX . CR
+2 1 MAX . CR
+1 2 MIN . CR
+2 1 MIN . CR

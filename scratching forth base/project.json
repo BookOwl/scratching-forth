@@ -77,7 +77,101 @@
 						["deleteLine:ofList:", "last", "DATA STACK"],
 						["setVar:to:", "~B", ["getLine:ofList:", "last", "DATA STACK"]],
 						["deleteLine:ofList:", "last", "DATA STACK"],
-						["append:toList:", ["+", ["readVariable", "~A"], ["readVariable", "~B"]], "DATA STACK"]]],
+						["append:toList:", ["+", ["readVariable", "~A"], ["readVariable", "~B"]], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "1+", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["append:toList:", ["+", ["readVariable", "~A"], 1], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "1-", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["append:toList:", ["", ["readVariable", "~A"], 1], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "2+", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["append:toList:", ["+", ["readVariable", "~A"], 2], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "2-", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["append:toList:", ["-", ["readVariable", "~A"], 2], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "2*", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["append:toList:", ["*", ["readVariable", "~A"], 2], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "2/", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["append:toList:", ["/", ["readVariable", "~A"], 2], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "ABS", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["append:toList:", ["computeFunction:of:", "abs", ["readVariable", "~A"]], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "NEGATE", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["append:toList:", ["*", ["readVariable", "~A"], -1], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "MAX", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["setVar:to:", "~B", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["doIfElse", [">", ["readVariable", "~A"], ["readVariable", "~B"]],
+										 [["setVar:to:", "~C", ["readVariable", "~A"]]],
+										 [["setVar:to:", "~C", ["readVariable", "~B"]]]
+						],
+						["append:toList:", ["readVariable", "~C"], "DATA STACK"]
+					]
+				],
+				[597.3,
+					463.05,
+					[["procDef", "MIN", [], [], true],
+						["setVar:to:", "~A", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["setVar:to:", "~B", ["getLine:ofList:", "last", "DATA STACK"]],
+						["deleteLine:ofList:", "last", "DATA STACK"],
+						["doIfElse", ["<", ["readVariable", "~A"], ["readVariable", "~B"]],
+										 [["setVar:to:", "~C", ["readVariable", "~A"]]],
+										 [["setVar:to:", "~C", ["readVariable", "~B"]]]
+						],
+						["append:toList:", ["readVariable", "~C"], "DATA STACK"]
+					]
+				],
 				[598.9,
 					311.9,
 					[["procDef", ".", [], [], true],
