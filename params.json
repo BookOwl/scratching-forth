@@ -1,0 +1,6 @@
+{
+  "name": "Scratching Forth",
+  "tagline": "The elegance of Forth with the awesomeness of Scratch.",
+  "body": "## What is Scratching Forth?\r\nScratching Forth is a compiler from Forth to MIT Scratch .sb2 files.\r\nIt is written in Python, and released under the MIT license.\r\n\r\n## How to install\r\nMake sure you have Python 3.5 installed, and then clone this repo to your computer with `git clone https://github.com/BookOwl/scratching-forth`\r\n\r\n## How to run\r\nCd into the cloned repo, and run `python3 main.py source.fs`.\r\nTo see all the options, run `python3 main.py -h`\r\n\r\n## I found a bug or I have a great idea!\r\nGreat! Please make an issue with your bug report or suggestion. PRs are welcomed.\r\n\r\n## What words does Scratching Forth support?\r\nScratching Forth currently support the following words:\r\n* +\r\n* -\r\n* *\r\n* /\r\n* DUP\r\n* DROP\r\n* MOD\r\n* /MOD\r\n* SWAP\r\n* ROT\r\n* OVER\r\n* .\r\n* CR\r\n* =\r\n* IF ... [ELSE ...] THEN\r\n* >\r\n* <\r\n* 0=\r\n* 0>\r\n* 0<\r\n* AND\r\n* OR\r\n* 1+\r\n* 1-\r\n* 2+\r\n* 2-\r\n* 2*\r\n* 2/\r\n* ABS\r\n* NEGATE\r\n* MIN\r\n* MAX\r\n\r\nScratching Forth does _not_ have support for the return stack (yet).",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
